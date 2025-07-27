@@ -107,7 +107,7 @@ class PatternApplicator {
     // Apply Root Cause Analysis pattern
     const rcaPattern = highSuccessPatterns.find(p => p.name === 'Root Cause Analysis');
     if (rcaPattern) {
-      console.log('\n�� Applying Root Cause Analysis Pattern:');
+      console.log('\n🔧 Applying Root Cause Analysis Pattern:');
       console.log('   - Infrastructure Team will analyze system status');
       console.log('   - Backend Team will investigate operations');
       console.log('   - DevOps Team will check working directory');
