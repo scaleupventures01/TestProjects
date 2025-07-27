@@ -1,3 +1,39 @@
+
+// Claude Code Integration
+const { ClaudeCodeWrapper } = require('../utils/claude-code-auth-fix');
+
+// Initialize Claude Code
+const claudeCode = new ClaudeCodeWrapper();
+
+// Enhanced team execution with Claude Code
+async function executeTeamWithClaudeCode(teamName, task, claudeCode) {
+  console.log(`🤖 ${teamName} team executing with Claude Code...`);
+  
+  try {
+    const prompt = `${teamName} team task: ${task}
+    
+    Provide detailed analysis and implementation approach for this task.`;
+    
+    const claudeCodeResponse = await claudeCode.query(prompt);
+    console.log(`📊 Claude Code analysis for ${teamName}: ${claudeCodeResponse.substring(0, 100)}...`);
+    
+    return {
+      team: teamName,
+      task: task,
+      claudeCodeAnalysis: claudeCodeResponse,
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    console.log(`⚠️ Claude Code failed for ${teamName}, using fallback`);
+    return {
+      team: teamName,
+      task: task,
+      claudeCodeAnalysis: 'Analysis failed - using fallback',
+      timestamp: new Date().toISOString()
+    };
+  }
+}
+
 #!/usr/bin/env node
 
 require('dotenv').config();

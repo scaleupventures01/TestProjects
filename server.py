@@ -184,6 +184,66 @@ def health_check():
         'allowed_extensions': list(ALLOWED_EXTENSIONS)
     })
 
+
+
+# Uploads page route
+@app.route('/uploads')
+def uploads_page():
+    return send_from_directory('.', 'uploads.html')
+
+# Fixed uploads page route
+@app.route('/uploads-fixed')
+def uploads_fixed_page():
+    return send_from_directory('.', 'uploads-fixed.html')
+
+# API endpoint to get list of uploaded files
+@app.route('/api/uploads')
+def get_uploads():
+    try:
+        files = []
+        upload_dir = 'uploads'
+        if os.path.exists(upload_dir):
+            for filename in os.listdir(upload_dir):
+                file_path = os.path.join(upload_dir, filename)
+                if os.path.isfile(file_path):
+                    stat = os.stat(file_path)
+                    files.append({
+                        'name': filename,
+                        'size': stat.st_size,
+                        'type': get_file_type(filename),
+                        'uploadDate': stat.st_mtime * 1000  # Convert to milliseconds
+                    })
+        return jsonify(files)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# API endpoint to delete a file
+@app.route('/api/uploads/<filename>', methods=['DELETE'])
+def delete_upload(filename):
+    try:
+        file_path = os.path.join('uploads', filename)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+            return jsonify({'success': True})
+        else:
+            return jsonify({'error': 'File not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+def get_file_type(filename):
+    """Determine file type based on extension"""
+    ext = filename.lower().split('.')[-1] if '.' in filename else ''
+    type_mapping = {
+        'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png', 'gif': 'image/gif',
+        'pdf': 'application/pdf',
+        'txt': 'text/plain', 'md': 'text/markdown', 'json': 'application/json',
+        'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'xls': 'application/vnd.ms-excel',
+        'doc': 'application/msword', 'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'csv': 'text/csv'
+    }
+    return type_mapping.get(ext, 'application/octet-stream')
+
 if __name__ == '__main__':
     print("🚀 Starting Hello World Confetti App with File Upload Server...")
     print(f"📁 Upload folder: {UPLOAD_FOLDER}")
