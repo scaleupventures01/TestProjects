@@ -212,4 +212,4 @@ function displaySuccessMessage(memoryManager) {
 }
 
 // Run initialization
-initializeMetaSystem().catch(console.error); 
+initializeMetaSystem().catch(console.error);

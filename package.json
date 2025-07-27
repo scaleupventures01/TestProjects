@@ -13,7 +13,8 @@
     "kafkajs": "^2.2.0",
     "redis": "^4.6.0",
     "tensorflow": "^4.10.0",
-    "@tensorflow/tfjs-node": "^4.10.0"
+    "@tensorflow/tfjs-node": "^4.10.0",
+    "dotenv": "^16.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.0",
@@ -45,4 +46,4 @@
   "engines": {
     "node": ">=18.0.0"
   }
-} 
+}
